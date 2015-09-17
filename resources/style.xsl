@@ -4,7 +4,11 @@
     version="1.0">
     
     <xsl:template match="/">
-        <h1>Hi!!!</h1>
+        <xsl:apply-templates select="//article"/>
     </xsl:template>
+    
+    <xml:template match="article">
+        <h1><xsl:value-of select="h1/a/text()" /></h1>
+    </xml:template>
 
 </xsl:stylesheet>
