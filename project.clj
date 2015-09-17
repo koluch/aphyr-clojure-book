@@ -5,7 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clojure-saxon "0.9.4"]
-                 [net.sourceforge.htmlcleaner/htmlcleaner "2.6.1"]]
+                 [net.sourceforge.htmlcleaner/htmlcleaner "2.6.1"]
+                 [org.apache.xmlgraphics/fop "2.0"]]
   :main ^:skip-aot aphyr-clojure-book.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
