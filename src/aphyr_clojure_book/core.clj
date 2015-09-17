@@ -7,7 +7,18 @@
   [& args]
   (println "Hello, World!"))
 
-(def input (xml/compile-xml "<html><body/></html>"))
+(defn transform 
+    [input xsl output]
+    
+    (let [comp-input (xml/compile-xml input)
+          comp-xsl (xml/compile-xslt xsl)]
+        (xml/serialize (comp-xsl comp-input) output)))
 
-(def xsl (xml/compile-xslt (new java.io.File "/Users/koluch/Dropbox/dev/clojure/aphyr-clojure-book/resources")))
+(-> (transform (new java.io.File "resources/input.xml") 
+               (new java.io.File "resources/style.xsl") 
+               (new java.io.File "resources/output.xml"))
+    (pprint))
+
+
+
 
