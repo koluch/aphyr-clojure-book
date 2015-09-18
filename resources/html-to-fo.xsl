@@ -19,28 +19,38 @@
         </fo:root>
     </xsl:template>
 
+    <xsl:template name="common-text-attributes">
+        <xsl:attribute name="space-after">10pt</xsl:attribute>
+        <xsl:attribute name="line-height">17pt</xsl:attribute>
+    </xsl:template>
 
     <xsl:template match="h1">
-        <fo:block font-size="25pt" space-after="10pt">
+        <fo:block >
+            <xsl:call-template name="common-text-attributes"/>
+            <xsl:attribute name="font-size">25pt</xsl:attribute>
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
     <xsl:template match="h2">
-        <fo:block font-size="16pt" space-after="10pt">
+        <fo:block >
+            <xsl:call-template name="common-text-attributes"/>
+            <xsl:attribute name="font-size">16pt</xsl:attribute>
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
     <xsl:template match="p">
-        <fo:block space-after="10pt">
+        <fo:block>
+            <xsl:call-template name="common-text-attributes"/>
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
     <!-- Lists -->
     <xsl:template match="ul|ol">
-        <fo:list-block margin-top="10pt">
+        <fo:list-block>
+            <xsl:call-template name="common-text-attributes"/>
             <xsl:apply-templates/>
         </fo:list-block>
     </xsl:template>
@@ -75,7 +85,19 @@
         </fo:list-item>
     </xsl:template>
 
+    <xsl:template match="code[@class='block']"></xsl:template>
+    <xsl:template match="blockquote"></xsl:template>
+
     <xsl:template match="code">
+        <fo:inline background-color="#e8e6e3"
+            padding-top="2pt"
+            padding-bottom="1pt"
+            padding-right="2pt"
+            padding-left="2pt"
+            font-family="monospace"
+            >
+            <xsl:apply-templates/>
+        </fo:inline>
     </xsl:template>
 
     <xsl:template match="em">
