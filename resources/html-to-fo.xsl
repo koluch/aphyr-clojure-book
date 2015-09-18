@@ -27,16 +27,45 @@
     </xsl:template>
     
     <xsl:template match="p">
-        <fo:block margin-bottom="10pt">
+        <fo:block margin-top="10pt">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
     <xsl:template match="ul|ol">
+        <fo:list-block margin-top="10pt">
+            <xsl:apply-templates/>
+        </fo:list-block>
+    </xsl:template>
+
+    <xsl:template match="li">
+        
+        <fo:list-item>
+                <fo:list-item-label end-indent="0">
+                    <fo:block>
+                        <fo:inline>-</fo:inline>
+                    </fo:block>
+                </fo:list-item-label>
+                <fo:list-item-body start-indent="body-start()">
+                    <fo:block>
+                        <!-- <xsl:apply-templates select=".//text()"/> -->
+                        <xsl:apply-templates />
+                    </fo:block>
+                </fo:list-item-body>
+            </fo:list-item>
+    </xsl:template>
+    
+    <xsl:template match="code">
     </xsl:template>
 
     <xsl:template match="em">
         <fo:inline font-style="italic">
+            <xsl:apply-templates/>
+        </fo:inline>
+    </xsl:template>
+    
+    <xsl:template match="sup">
+        <fo:inline vertical-align="super">
             <xsl:apply-templates/>
         </fo:inline>
     </xsl:template>
