@@ -85,7 +85,11 @@
         </fo:list-item>
     </xsl:template>
 
-    <xsl:template match="code[@class='block']"></xsl:template>
+    <xsl:template match="code[@class='block']">
+        <fo:block background-color="#333" color="white"  white-space="pre" font-size="8pt">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
     <xsl:template match="blockquote"></xsl:template>
 
     <xsl:template match="code">
