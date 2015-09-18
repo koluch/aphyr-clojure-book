@@ -4,7 +4,7 @@
             [clojure.java.io :as io])
   (:import [org.htmlcleaner HtmlCleaner
                             CleanerProperties
-                            PrettyXmlSerializer]))
+                            SimpleXmlSerializer]))
 
 
 (defn download 
@@ -17,19 +17,19 @@
     [^java.io.File in ^java.io.File out]
     (let [props (CleanerProperties.)]
         (doto props
-            (.setTranslateSpecialEntities true)
-            (.setTransResCharsToNCR true)
-            (.setOmitComments true))
+            (.setTranslateSpecialEntities false)
+            (.setTransResCharsToNCR false)
+            (.setOmitComments false))
         (let [cleaner (HtmlCleaner. props)
               cleaned (.clean cleaner in)]
-            (let [serializer (PrettyXmlSerializer. props)]
+            (let [serializer (SimpleXmlSerializer. props)]
                 (.writeToFile serializer cleaned (.getPath out) "utf-8")))))
 
 (defn transform 
     [input xsl output]
     (let [comp-input (xml/compile-xml input)
           comp-xsl (xml/compile-xslt xsl)]
-        (xml/serialize (comp-xsl comp-input) output)))
+        (xml/serialize (comp-xsl comp-input) output [[:method "xml"]])))
 
 
 
@@ -56,12 +56,16 @@
   [& args]
   (do
       ;(download "https://aphyr.com/tags/Clojure-from-the-ground-up" (java.io.File. "target/input.html"))
-      ;(clean (java.io.File. "target/input.html") (java.io.File. "target/input.xml"))
-      (transform (new java.io.File "target/input.xml")
-                 (new java.io.File "resources/style.xsl")
-                 (new java.io.File "target/output.xml"))
-      (make-pdf (new java.io.File "target/output.xml")
-                (new java.io.File "target/output.pdf")))
+      (clean (java.io.File. "target/input.html") (java.io.File. "target/cleaned.xml"))
+      (transform (new java.io.File "target/cleaned.xml")
+                 (new java.io.File "resources/restructure.xsl")
+                 (new java.io.File "target/restructured.xml"))
+      (transform (new java.io.File "target/restructured.xml")
+                 (new java.io.File "resources/html-to-fo.xsl")
+                 (new java.io.File "target/fo.xml"))
+      (make-pdf (new java.io.File "target/fo.xml")
+                (new java.io.File "target/output.pdf"))
+      )
   (prn "Done"))
 
 
