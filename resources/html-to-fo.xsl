@@ -21,40 +21,60 @@
 
 
     <xsl:template match="h1">
-        <fo:block font-size="20pt">
-            <xsl:apply-templates/>
-        </fo:block>
-    </xsl:template>
-    
-    <xsl:template match="p">
-        <fo:block margin-top="10pt">
+        <fo:block font-size="25pt" space-after="10pt">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
+    <xsl:template match="h2">
+        <fo:block font-size="16pt" space-after="10pt">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="p">
+        <fo:block space-after="10pt">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <!-- Lists -->
     <xsl:template match="ul|ol">
         <fo:list-block margin-top="10pt">
             <xsl:apply-templates/>
         </fo:list-block>
     </xsl:template>
 
-    <xsl:template match="li">
-        
+    <xsl:template match="ul/li">
         <fo:list-item>
-                <fo:list-item-label end-indent="0">
-                    <fo:block>
-                        <fo:inline>-</fo:inline>
-                    </fo:block>
-                </fo:list-item-label>
-                <fo:list-item-body start-indent="body-start()">
-                    <fo:block>
-                        <!-- <xsl:apply-templates select=".//text()"/> -->
-                        <xsl:apply-templates />
-                    </fo:block>
-                </fo:list-item-body>
-            </fo:list-item>
+            <fo:list-item-label end-indent="0">
+                <fo:block>
+                    <fo:inline>&#8212;</fo:inline>
+                </fo:block>
+            </fo:list-item-label>
+            <fo:list-item-body start-indent="body-start()">
+                <fo:block>
+                    <xsl:apply-templates />
+                </fo:block>
+            </fo:list-item-body>
+        </fo:list-item>
     </xsl:template>
-    
+
+    <xsl:template match="ol/li">
+        <fo:list-item space-after="10pt">
+            <fo:list-item-label end-indent="0">
+                <fo:block>
+                    <fo:inline><xsl:value-of select="count(preceding-sibling::li) + 1"/>. </fo:inline>
+                </fo:block>
+            </fo:list-item-label>
+            <fo:list-item-body start-indent="20pt">
+                <fo:block>
+                    <xsl:apply-templates />
+                </fo:block>
+            </fo:list-item-body>
+        </fo:list-item>
+    </xsl:template>
+
     <xsl:template match="code">
     </xsl:template>
 

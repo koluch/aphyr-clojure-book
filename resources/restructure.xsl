@@ -17,7 +17,7 @@
             <xsl:apply-templates select=".//div[@class='bar']/node()"/>
             <xsl:apply-templates select=".//div[@class='body']/node()"/>
         </xsl:copy>
-        <xsl:apply-templates select="preceding::article[1]"/>
+        <xsl:apply-templates select="preceding-sibling::article[1]"/>
     </xsl:template>
 
     
