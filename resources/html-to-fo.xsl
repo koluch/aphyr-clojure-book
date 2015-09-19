@@ -15,16 +15,62 @@
             </fo:layout-master-set>
             <fo:page-sequence master-reference="A4-portrait">
                 <fo:flow flow-name="xsl-region-body">
+                    <xsl:call-template name="toc"/>
                     <xsl:apply-templates/>
                 </fo:flow>
             </fo:page-sequence>
         </fo:root>
     </xsl:template>
 
+    <!-- Attribute templates -->
     <xsl:template name="common-text-attributes">
         <xsl:attribute name="space-before">5pt</xsl:attribute>
         <xsl:attribute name="space-after">5pt</xsl:attribute>
         <xsl:attribute name="line-height">17pt</xsl:attribute>
+    </xsl:template>
+    <xsl:template name="h1-attributes">
+        <xsl:call-template name="common-text-attributes"/>
+        <xsl:attribute name="font-size">25pt</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="space-after">10pt</xsl:attribute>
+    </xsl:template>
+    <xsl:template name="h2-attributes">
+        <xsl:call-template name="common-text-attributes"/>
+        <xsl:attribute name="space-before">20pt</xsl:attribute>
+        <xsl:attribute name="font-size">16pt</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+    </xsl:template>
+    <xsl:template name="link-attributes">
+        <xsl:attribute name="color">#00C0FF</xsl:attribute>
+    </xsl:template>
+
+    <!-- TOC -->
+    <xsl:template name="toc">
+        <fo:block page-break-before="always">
+            <fo:block font-size="25pt">
+                <xsl:call-template name="h1-attributes"/>
+                Table of content
+            </fo:block>
+            <fo:list-block >
+                <xsl:for-each select="//article/h1">
+                    <fo:list-item>
+                        <fo:list-item-label end-indent="10cm">
+                            <fo:block width="500px">
+                                <fo:basic-link internal-destination="{generate-id(.)}">
+                                    <xsl:call-template name="link-attributes"/>
+                                    <xsl:value-of select=".//text()"/>
+                                </fo:basic-link>
+                            </fo:block>
+                        </fo:list-item-label>
+                        <fo:list-item-body start-indent="body-start()">
+                            <fo:block text-align="right">
+                                <fo:page-number-citation ref-id="{generate-id(.)}" />
+                            </fo:block>
+                        </fo:list-item-body>
+                    </fo:list-item>
+                </xsl:for-each>
+            </fo:list-block>
+        </fo:block>
     </xsl:template>
 
     <!-- Article -->
@@ -36,21 +82,15 @@
 
     <!-- Headers -->
     <xsl:template match="h1">
-        <fo:block >
-            <xsl:call-template name="common-text-attributes"/>
-            <xsl:attribute name="font-size">25pt</xsl:attribute>
-            <xsl:attribute name="font-weight">bold</xsl:attribute>
-            <xsl:attribute name="space-after">10pt</xsl:attribute>
+        <fo:block id="{generate-id(.)}">
+            <xsl:call-template name="h1-attributes"/>
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
     <xsl:template match="h2">
         <fo:block >
-            <xsl:call-template name="common-text-attributes"/>
-            <xsl:attribute name="space-before">20pt</xsl:attribute>
-            <xsl:attribute name="font-size">16pt</xsl:attribute>
-            <xsl:attribute name="font-weight">bold</xsl:attribute>
+            <xsl:call-template name="h2-attributes"/>
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -76,7 +116,10 @@
     </xsl:template>
 
     <xsl:template match="a">
-        <fo:basic-link external-destination="${@href}" color="#00C0FF"><xsl:apply-templates/></fo:basic-link>
+        <fo:basic-link external-destination="${@href}">
+            <xsl:call-template name="link-attributes"/>
+            <xsl:apply-templates/>
+        </fo:basic-link>
     </xsl:template>
 
 
