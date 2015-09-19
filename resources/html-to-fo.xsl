@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
-    version="1.0">
+    version="2.0">
+
+    <xsl:preserve-space elements="code"/>
 
     <xsl:template match="/">
         <fo:root>
@@ -86,10 +88,55 @@
     </xsl:template>
 
     <xsl:template match="code[@class='block']">
-        <fo:block background-color="#333" color="white"  white-space="pre" font-size="8pt">
+        <fo:block background-color="#333"
+            color="white"
+            font-size="9pt"
+            font-family="monospace"
+            white-space="pre"
+            wrap-option="wrap"
+            padding="5pt"
+            space-after="10pt"
+            >
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
+
+    <xsl:template match="code[@class='block']/text()">
+        <xsl:copy>
+            <xsl:apply-templates/>
+        </xsl:copy>
+
+        <!--<xsl:variable name="tokenized" select="tokenize(., '\n')"/>-->
+
+
+        <!--<xsl:choose>-->
+            <!--<xsl:when test="count($tokenized) > 1">-->
+                <!--<xsl:for-each select="$tokenized">-->
+                    <!--<xsl:choose>-->
+                        <!--<xsl:when test="position() > 1">-->
+                            <!--<fo:block white-space-treatment="preserve"><xsl:value-of select="."/></fo:block>-->
+                        <!--</xsl:when>-->
+                        <!--<xsl:otherwise>-->
+                            <!--<xsl:value-of select="."/>-->
+                        <!--</xsl:otherwise>-->
+                    <!--</xsl:choose>-->
+                <!--</xsl:for-each>-->
+            <!--</xsl:when>-->
+            <!--<xsl:otherwise>-->
+                <!--<xsl:copy>-->
+                    <!--<xsl:apply-templates/>-->
+                <!--</xsl:copy>-->
+            <!--</xsl:otherwise>-->
+        <!--</xsl:choose>-->
+
+    </xsl:template>
+
+    <xsl:template match="code[@class='block']/span">
+        <fo:inline>
+            <xsl:apply-templates/>
+        </fo:inline>
+    </xsl:template>
+
     <xsl:template match="blockquote"></xsl:template>
 
     <xsl:template match="code">
