@@ -52,22 +52,25 @@
 
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Convert resources/input.html to pdf"
   [& args]
   (do
-      ;(download "https://aphyr.com/tags/Clojure-from-the-ground-up" (java.io.File. "target/input.html"))
+    (clean (java.io.File. "resources/input.html") (java.io.File. "target/cleaned.xml"))
+    (transform (new java.io.File "target/cleaned.xml")
+               (new java.io.File "resources/restructure.xsl")
+               (new java.io.File "target/restructured.xml"))
+    (transform (new java.io.File "target/restructured.xml")
+               (new java.io.File "resources/html-to-fo.xsl")
+               (new java.io.File "target/fo.xml"))
+    (.mkdir (new java.io.File "pdf"))
+    (make-pdf (new java.io.File "target/fo.xml")
+              (new java.io.File "pdf/Kyle Kingsbury - Clojure from the ground up.pdf"))))
 
-      (clean (java.io.File. "target/input.html") (java.io.File. "target/cleaned.xml"))
-      (transform (new java.io.File "target/cleaned.xml")
-                 (new java.io.File "resources/restructure.xsl")
-                 (new java.io.File "target/restructured.xml"))
-      (transform (new java.io.File "target/restructured.xml")
-                 (new java.io.File "resources/html-to-fo.xsl")
-                 (new java.io.File "target/fo.xml"))
-      (.mkdir (new java.io.File "pdf"))
-      (make-pdf (new java.io.File "target/fo.xml")
-                (new java.io.File "pdf/Kyle Kingsbury - Clojure from the ground up.pdf"))
-      )
-  (prn "Done"))
+
+(defn -download
+  "Update resources/input.html from aphyr.com"
+  [& args]
+  (do
+    (download "https://aphyr.com/tags/Clojure-from-the-ground-up" (java.io.File. "resources/input.html"))))
 
 

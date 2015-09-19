@@ -7,6 +7,7 @@
                  [clojure-saxon "0.9.4"]
                  [net.sourceforge.htmlcleaner/htmlcleaner "2.6.1"]
                  [org.apache.xmlgraphics/fop "2.0"]]
+  :aliases {"download" ["run" "-m" "aphyr-clojure-book.core/-download"]}
   :main ^:skip-aot aphyr-clojure-book.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
