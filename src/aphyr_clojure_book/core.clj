@@ -6,7 +6,7 @@
                             CleanerProperties
                             SimpleXmlSerializer]))
 
-
+; Steps functions
 (defn download 
     [uri to-file]
     (with-open [in (io/input-stream uri)
@@ -48,9 +48,7 @@
       (.transform transformer src res))))
 
 
-
-
-
+; Interface
 (defn -main
   "Convert resources/input.html to pdf"
   [& args]
@@ -65,7 +63,6 @@
     (.mkdir (new java.io.File "pdf"))
     (make-pdf (new java.io.File "target/fo.xml")
               (new java.io.File "pdf/Kyle Kingsbury - Clojure from the ground up.pdf"))))
-
 
 (defn -download
   "Update resources/input.html from aphyr.com"
