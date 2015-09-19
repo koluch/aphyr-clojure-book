@@ -15,6 +15,7 @@
             </fo:layout-master-set>
             <fo:page-sequence master-reference="A4-portrait">
                 <fo:flow flow-name="xsl-region-body">
+                    <xsl:call-template name="cover-page"/>
                     <xsl:call-template name="toc"/>
                     <xsl:apply-templates/>
                 </fo:flow>
@@ -42,6 +43,19 @@
     </xsl:template>
     <xsl:template name="link-attributes">
         <xsl:attribute name="color">#00C0FF</xsl:attribute>
+    </xsl:template>
+
+    <!-- Cover page -->
+    <xsl:template name="cover-page">
+        <fo:block vertical-align="middle" margin-top="350pt">
+            <fo:block font-family="Helvetica" font-size="30pt" text-align="center" >
+                Clojure from the ground up
+            </fo:block>
+            <fo:block font-family="Helvetica" font-size="12pt" text-align="center" >
+                by Kyle Kingsbury
+            </fo:block>
+        </fo:block>
+
     </xsl:template>
 
     <!-- TOC -->

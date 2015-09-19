@@ -56,6 +56,7 @@
   [& args]
   (do
       ;(download "https://aphyr.com/tags/Clojure-from-the-ground-up" (java.io.File. "target/input.html"))
+
       (clean (java.io.File. "target/input.html") (java.io.File. "target/cleaned.xml"))
       (transform (new java.io.File "target/cleaned.xml")
                  (new java.io.File "resources/restructure.xsl")
@@ -63,8 +64,9 @@
       (transform (new java.io.File "target/restructured.xml")
                  (new java.io.File "resources/html-to-fo.xsl")
                  (new java.io.File "target/fo.xml"))
+      (.mkdir (new java.io.File "pdf"))
       (make-pdf (new java.io.File "target/fo.xml")
-                (new java.io.File "target/output.pdf"))
+                (new java.io.File "pdf/Kyle Kingsbury - Clojure from the ground up.pdf"))
       )
   (prn "Done"))
 
