@@ -27,12 +27,20 @@
         <xsl:attribute name="line-height">17pt</xsl:attribute>
     </xsl:template>
 
+    <!-- Article -->
+    <xsl:template match="article">
+        <fo:block page-break-before="always">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
     <!-- Headers -->
     <xsl:template match="h1">
         <fo:block >
             <xsl:call-template name="common-text-attributes"/>
             <xsl:attribute name="font-size">25pt</xsl:attribute>
             <xsl:attribute name="font-weight">bold</xsl:attribute>
+            <xsl:attribute name="space-after">10pt</xsl:attribute>
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
