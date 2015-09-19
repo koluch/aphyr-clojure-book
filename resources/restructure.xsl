@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
-    version="1.0">
+    xmlns:fn="custom_function_ns"
+    version="2.0">
 
-    
     <xsl:template match="/">
         <html>
             <body>
-                <xsl:apply-templates select=".//article[last()]"/>
+                <xsl:apply-templates select="reverse(.//article[.//h1/a/@href != '/posts/318-clojure-from-the-ground-up-roadmap'])"/>
             </body>
         </html>
     </xsl:template>
-    
+
+
     <xsl:template match="article">
 
-        <xsl:choose>
-            <!-- Skip roadmap post -->
-            <xsl:when test="count(.//a[@href = '/posts/318-clojure-from-the-ground-up-roadmap']) > 0"/>
-            <xsl:otherwise>
-                <xsl:copy>
-                    <xsl:apply-templates select=".//div[@class='bar']/node()"/>
-                    <xsl:apply-templates select=".//div[@class='body']/node()"/>
-                </xsl:copy>
-            </xsl:otherwise>
-        </xsl:choose>
-        <xsl:apply-templates select="preceding-sibling::article[1]"/>
-
-    </xsl:template>
-
-    
-    <xsl:template match="h1/a">
-        <xsl:variable name="title" select="substring-after( ., 'Clojure from the ground up: ')"/>
-        <xsl:value-of select="concat(upper-case(substring($title,1,1)), substring($title, 2))"/>
-    </xsl:template>
-        
-
-    <xsl:template match="@*|node()" >
         <xsl:copy>
-            <xsl:apply-templates select="@*|node()"  />
+            <xsl:apply-templates select=".//div[@class='bar']/node()" />
+            <xsl:apply-templates select=".//div[@class='body']/node()" />
+        </xsl:copy>
+
+    </xsl:template>
+
+
+    <xsl:template match="h1">
+        <xsl:variable name="title" select="substring-after(./a/text(), 'Clojure from the ground up: ')" />
+        <xsl:variable name="number" select="count(following::article[.//h1/a/@href != '/posts/318-clojure-from-the-ground-up-roadmap']) + 1" />
+        <xsl:copy>
+        <xsl:value-of
+            select="concat('Chapter ', $number, ' :', upper-case(substring($title,1,1)), substring($title, 2))" />
+        </xsl:copy>
+    </xsl:template>
+
+
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" />
         </xsl:copy>
     </xsl:template>
 
