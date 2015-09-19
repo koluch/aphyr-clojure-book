@@ -22,7 +22,8 @@
     </xsl:template>
 
     <xsl:template name="common-text-attributes">
-        <xsl:attribute name="space-after">10pt</xsl:attribute>
+        <xsl:attribute name="space-before">5pt</xsl:attribute>
+        <xsl:attribute name="space-after">5pt</xsl:attribute>
         <xsl:attribute name="line-height">17pt</xsl:attribute>
     </xsl:template>
 
@@ -206,7 +207,18 @@
 
 
 
-    <xsl:template match="blockquote"></xsl:template>
+    <xsl:template match="blockquote">
+        <fo:block background-color="#e8e6e3"
+            space-before="5pt"
+            space-after="5pt"
+            padding-left="10pt"
+            padding-right="0pt"
+            padding-top="5pt"
+            padding-bottom="5pt"
+            margin="5pt">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
 
     <!-- Code inline -->
     <xsl:template match="code">
