@@ -42,7 +42,6 @@
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:template>
     <xsl:template name="link-attributes">
-        <xsl:attribute name="color">#00C0FF</xsl:attribute>
     </xsl:template>
 
     <!-- Cover page -->
