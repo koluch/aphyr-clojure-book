@@ -28,7 +28,7 @@
         <xsl:variable name="number" select="count(following::article[.//h1/a/@href != '/posts/318-clojure-from-the-ground-up-roadmap']) + 1" />
         <xsl:copy>
         <xsl:value-of
-            select="concat('Chapter ', $number, ' :', upper-case(substring($title,1,1)), substring($title, 2))" />
+            select="concat('Chapter ', $number, ': ', upper-case(substring($title,1,1)), substring($title, 2))" />
         </xsl:copy>
     </xsl:template>
 
