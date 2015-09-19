@@ -6,16 +6,28 @@
     <xsl:preserve-space elements="code"/>
 
     <xsl:template match="/">
+
         <fo:root>
             <fo:layout-master-set>
                 <fo:simple-page-master master-name="A4-portrait"
-                    page-height="29.7cm" page-width="21.0cm" margin="2cm">
-                    <fo:region-body/>
+                    page-height="29.7cm"
+                    page-width="21.0cm"
+                    margin="1.5cm 1.5cm 0.5cm 1.5cm"
+                    padding-bottom="2cm">
+                    <fo:region-body space-after="30pt"/>
+                    <fo:region-after region-name="footer"  extent="20pt" />
                 </fo:simple-page-master>
             </fo:layout-master-set>
             <fo:page-sequence master-reference="A4-portrait">
                 <fo:flow flow-name="xsl-region-body">
                     <xsl:call-template name="cover-page"/>
+                </fo:flow>
+            </fo:page-sequence>
+            <fo:page-sequence master-reference="A4-portrait">
+                <fo:static-content flow-name="footer" >
+                    <fo:block text-align="center" font-size="8pt" vertical-align="bottom" height="1cm"><fo:page-number/></fo:block>
+                </fo:static-content>
+                <fo:flow flow-name="xsl-region-body">
                     <xsl:call-template name="toc"/>
                     <xsl:apply-templates/>
                 </fo:flow>
