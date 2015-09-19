@@ -7,29 +7,29 @@
                             SimpleXmlSerializer]))
 
 ; Steps functions
-(defn download 
-    [uri to-file]
-    (with-open [in (io/input-stream uri)
-                out (io/output-stream to-file)]
-        (io/copy in out)))
+(defn download
+  [uri to-file]
+  (with-open [in (io/input-stream uri)
+              out (io/output-stream to-file)]
+    (io/copy in out)))
 
 (defn clean
-    [^java.io.File in ^java.io.File out]
-    (let [props (CleanerProperties.)]
-        (doto props
-            (.setTranslateSpecialEntities false)
-            (.setTransResCharsToNCR false)
-            (.setOmitComments false))
-        (let [cleaner (HtmlCleaner. props)
-              cleaned (.clean cleaner in)]
-            (let [serializer (SimpleXmlSerializer. props)]
-                (.writeToFile serializer cleaned (.getPath out) "utf-8")))))
+  [^java.io.File in ^java.io.File out]
+  (let [props (CleanerProperties.)]
+    (doto props
+      (.setTranslateSpecialEntities false)
+      (.setTransResCharsToNCR false)
+      (.setOmitComments false))
+    (let [cleaner (HtmlCleaner. props)
+          cleaned (.clean cleaner in)]
+      (let [serializer (SimpleXmlSerializer. props)]
+        (.writeToFile serializer cleaned (.getPath out) "utf-8")))))
 
-(defn transform 
-    [input xsl output]
-    (let [comp-input (xml/compile-xml input)
-          comp-xsl (xml/compile-xslt xsl)]
-        (xml/serialize (comp-xsl comp-input) output [[:method "xml"]])))
+(defn transform
+  [input xsl output]
+  (let [comp-input (xml/compile-xml input)
+        comp-xsl (xml/compile-xslt xsl)]
+    (xml/serialize (comp-xsl comp-input) output [[:method "xml"]])))
 
 
 
