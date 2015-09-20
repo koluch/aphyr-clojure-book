@@ -58,12 +58,12 @@
 
     <!-- Cover page -->
     <xsl:template name="cover-page">
-        <fo:block vertical-align="middle" margin-top="350pt">
-            <fo:block font-family="Helvetica" font-size="30pt" text-align="center" >
-                Clojure from the ground up
+        <fo:block vertical-align="middle" margin-top="330pt">
+            <fo:block font-size="35pt" text-align="center" >
+                <xsl:value-of select="//head/meta[@name='title']/@content"/>
             </fo:block>
-            <fo:block font-family="Helvetica" font-size="12pt" text-align="center" >
-                by Kyle Kingsbury
+            <fo:block font-size="16pt" margin-top="10pt" text-align="center" >
+                by <xsl:value-of select="//head/meta[@name='author']/@content"/>
             </fo:block>
         </fo:block>
 
