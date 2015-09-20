@@ -18,8 +18,10 @@
 
 
     <xsl:template match="article">
-
         <xsl:copy>
+            <a>
+                <xsl:attribute name="name" select=".//div[@class='bar']/h1/a/@href"/>
+            </a>
             <xsl:apply-templates select=".//div[@class='bar']/node()" />
             <xsl:apply-templates select=".//div[@class='body']/node()" />
         </xsl:copy>
@@ -34,6 +36,34 @@
         <xsl:value-of
             select="concat('Chapter ', $number, ': ', upper-case(substring($title,1,1)), substring($title, 2))" />
         </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="a">
+        <!-- Replace links to the chapters of this books by local links -->
+        <xsl:choose>
+            <xsl:when test="starts-with(@href, 'http://aphyr.com/')">
+                <xsl:variable name="local-path" select="substring-after(@href, 'http://aphyr.com')"/>
+                <xsl:choose>
+                    <xsl:when test="//article[.//h1/a/@href = $local-path]">
+                        <a>
+                            <xsl:apply-templates select="@*" />
+                            <xsl:attribute name="href" select="concat('#', $local-path)"/>
+                            <xsl:apply-templates select="node()" />
+                        </a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:copy>
+                            <xsl:apply-templates select="@*|node()" />
+                        </xsl:copy>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy>
+                    <xsl:apply-templates select="@*|node()" />
+                </xsl:copy>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 
