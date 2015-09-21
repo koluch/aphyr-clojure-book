@@ -54,6 +54,7 @@
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:template>
     <xsl:template name="link-attributes">
+        <xsl:attribute name="color">#008FBF</xsl:attribute>
     </xsl:template>
 
     <!-- Cover page -->
@@ -151,7 +152,7 @@
         </fo:basic-link>
     </xsl:template>
     <xsl:template match="a">
-        <fo:basic-link external-destination="${@href}">
+        <fo:basic-link external-destination="{@href}">
             <xsl:call-template name="link-attributes"/>
             <xsl:apply-templates/>
         </fo:basic-link>

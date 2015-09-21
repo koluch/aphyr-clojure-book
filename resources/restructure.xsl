@@ -28,6 +28,17 @@
 
     </xsl:template>
 
+    <xsl:function name="fn:map-url">
+        <xsl:param name="url"/>
+        <xsl:choose>
+            <xsl:when test="$url = '/posts/301-clojure-from-the-ground-up-first-principles'">
+                <xsl:value-of select="'/posts/301-clojure-from-the-ground-up-welcome'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$url"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 
     <xsl:template match="h1">
         <xsl:variable name="title" select="substring-after(./a/text(), 'Clojure from the ground up: ')" />
@@ -41,8 +52,20 @@
     <xsl:template match="a">
         <!-- Replace links to the chapters of this books by local links -->
         <xsl:choose>
-            <xsl:when test="starts-with(@href, 'http://aphyr.com/')">
-                <xsl:variable name="local-path" select="substring-after(@href, 'http://aphyr.com')"/>
+            <xsl:when test="starts-with(@href, 'http://aphyr.com/') or starts-with(@href, '/posts/')">
+                <xsl:variable name="local-path">
+                    <xsl:variable name="unmapped">
+                        <xsl:choose>
+                            <xsl:when test="starts-with(@href, 'http://aphyr.com')">
+                                <xsl:value-of select="substring-after(@href, 'http://aphyr.com')"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="@href"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <xsl:value-of select="fn:map-url($unmapped)"/>
+                </xsl:variable>
                 <xsl:choose>
                     <xsl:when test="//article[.//h1/a/@href = $local-path]">
                         <a>
@@ -52,16 +75,20 @@
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:copy>
-                            <xsl:apply-templates select="@*|node()" />
-                        </xsl:copy>
+                        <a>
+                            <xsl:apply-templates select="@*" />
+                            <xsl:attribute name="href" select="$local-path"/>
+                            <xsl:apply-templates select="node()" />
+                        </a>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:copy>
-                    <xsl:apply-templates select="@*|node()" />
-                </xsl:copy>
+                    <a>
+                        <xsl:apply-templates select="@*" />
+                        <xsl:attribute name="href" select="'fuck'"/>
+                        <xsl:apply-templates select="node()" />
+                    </a>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
