@@ -75,20 +75,16 @@
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
-                        <a>
-                            <xsl:apply-templates select="@*" />
-                            <xsl:attribute name="href" select="$local-path"/>
-                            <xsl:apply-templates select="node()" />
-                        </a>
+                        <xsl:copy>
+                            <xsl:apply-templates select="@*|node()" />
+                        </xsl:copy>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
-                    <a>
-                        <xsl:apply-templates select="@*" />
-                        <xsl:attribute name="href" select="'fuck'"/>
-                        <xsl:apply-templates select="node()" />
-                    </a>
+                <xsl:copy>
+                    <xsl:apply-templates select="@*|node()" />
+                </xsl:copy>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
