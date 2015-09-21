@@ -140,13 +140,22 @@
         </fo:inline>
     </xsl:template>
 
+    <xsl:template match="a[@name]">
+        <fo:inline id="{@name}"/>
+    </xsl:template>
+    <xsl:template match="a[starts-with(@href, '#')]">
+        <xsl:variable name="href" select="@href"/>
+        <fo:basic-link internal-destination="{substring-after($href, '#')}">
+            <xsl:call-template name="link-attributes"/>
+            <xsl:apply-templates/>
+        </fo:basic-link>
+    </xsl:template>
     <xsl:template match="a">
         <fo:basic-link external-destination="${@href}">
             <xsl:call-template name="link-attributes"/>
             <xsl:apply-templates/>
         </fo:basic-link>
     </xsl:template>
-
 
 
     <!-- Lists -->
