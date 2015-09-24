@@ -1,36 +1,19 @@
 # aphyr-clojure-book
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
+This is a book by Kyle Kingsbury (aka aphyr) called "Clojure from the ground up", made of his posts on his [site](www.aphyr.com).
 
 ## Usage
 
-FIXME: explanation
+For build:
 
-    $ java -jar aphyr-clojure-book-0.1.0-standalone.jar [args]
+    $ lein
 
-## Options
+For only update downloaded content:
 
-FIXME: listing of options this app accepts.
+    $ lein download
+    
+For only build new pdf:
 
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2015 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+    $ lein convert
+    
+    
