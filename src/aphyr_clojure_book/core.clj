@@ -49,8 +49,15 @@
 
 
 ; Interface
-(defn -main
-  "Convert resources/input.html to pdf"
+(defn -download
+  "Update resources/input.html from aphyr.com"
+  [& args]
+  (do
+    (download "https://aphyr.com/tags/Clojure-from-the-ground-up" (java.io.File. "resources/input.html"))))
+
+              
+(defn -convert
+  "Make pdf"
   [& args]
   (do
     (clean (java.io.File. "resources/input.html") (java.io.File. "target/cleaned.xml"))
@@ -64,10 +71,9 @@
     (make-pdf (new java.io.File "target/fo.xml")
               (new java.io.File "pdf/Kyle Kingsbury - Clojure from the ground up.pdf"))))
 
-(defn -download
-  "Update resources/input.html from aphyr.com"
+(defn -main
+  "Fully rebuild project"
   [& args]
   (do
-    (download "https://aphyr.com/tags/Clojure-from-the-ground-up" (java.io.File. "resources/input.html"))))
-
-
+    (-download)
+    (-convert)))
