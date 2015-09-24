@@ -3,6 +3,7 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     version="2.0">
 
+
     <xsl:preserve-space elements="code"/>
 
     <xsl:template match="/">
@@ -59,12 +60,15 @@
 
     <!-- Cover page -->
     <xsl:template name="cover-page">
-        <fo:block vertical-align="middle" margin-top="330pt">
+        <fo:block vertical-align="middle" margin-top="340pt">
             <fo:block font-size="35pt" text-align="center" >
                 <xsl:value-of select="//head/meta[@name='title']/@content"/>
             </fo:block>
             <fo:block font-size="16pt" margin-top="10pt" text-align="center" >
                 by <xsl:value-of select="//head/meta[@name='author']/@content"/>
+            </fo:block>
+            <fo:block font-size="8pt" margin-top="320pt" text-align="center" font-style="italic" >
+                version <xsl:value-of select="//head/meta[@name='version']/@content"/>
             </fo:block>
         </fo:block>
 

@@ -6,6 +6,20 @@
                             CleanerProperties
                             SimpleXmlSerializer]))
 
+
+                            
+                            
+; Helpers
+(defn log 
+  "Retreive sequence of commits for specified path. If path is not specified, returns full log"
+  [& args]
+  (let [lg (-> (org.eclipse.jgit.api.Git/open (new java.io.File "."))
+               (.log))]
+    (when args
+      (.addPath lg (first args)))
+    (seq (.call lg))))
+                            
+                            
 ; Steps functions
 (defn download
   [uri to-file]
@@ -26,10 +40,10 @@
         (.writeToFile serializer cleaned (.getPath out) "utf-8")))))
 
 (defn transform
-  [input xsl output]
+  [input xsl context output]
   (let [comp-input (xml/compile-xml input)
         comp-xsl (xml/compile-xslt xsl)]
-    (xml/serialize (comp-xsl comp-input) output [[:method "xml"]])))
+    (xml/serialize (comp-xsl comp-input context) output [[:method "xml"]])))
 
 
 
@@ -49,6 +63,8 @@
 
 
 ; Interface
+
+
 (defn -download
   "Update resources/input.html from aphyr.com"
   [& args]
@@ -59,17 +75,22 @@
 (defn -convert
   "Make pdf"
   [& args]
-  (do
-    (clean (java.io.File. "resources/input.html") (java.io.File. "target/cleaned.xml"))
-    (transform (new java.io.File "target/cleaned.xml")
-               (new java.io.File "resources/restructure.xsl")
-               (new java.io.File "target/restructured.xml"))
-    (transform (new java.io.File "target/restructured.xml")
-               (new java.io.File "resources/html-to-fo.xsl")
-               (new java.io.File "target/fo.xml"))
-    (.mkdir (new java.io.File "pdf"))
-    (make-pdf (new java.io.File "target/fo.xml")
-              (new java.io.File "pdf/Kyle Kingsbury - Clojure from the ground up.pdf"))))
+  (let [xsl-context {:version (clojure.string/join "." [(count (log "resources/input.html"))
+                                                             (count (log "resources"))
+                                                             (count (log "src"))])} ]
+    (do
+      (clean (java.io.File. "resources/input.html") (java.io.File. "target/cleaned.xml"))
+      (transform (new java.io.File "target/cleaned.xml")
+                 (new java.io.File "resources/restructure.xsl")
+                 xsl-context
+                 (new java.io.File "target/restructured.xml"))
+      (transform (new java.io.File "target/restructured.xml")
+                 (new java.io.File "resources/html-to-fo.xsl")
+                 xsl-context
+                 (new java.io.File "target/fo.xml"))
+      (.mkdir (new java.io.File "pdf"))
+      (make-pdf (new java.io.File "target/fo.xml")
+                (new java.io.File "pdf/Kyle Kingsbury - Clojure from the ground up.pdf")))))
 
 (defn -main
   "Fully rebuild project"

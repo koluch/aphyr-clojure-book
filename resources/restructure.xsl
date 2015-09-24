@@ -4,11 +4,14 @@
     xmlns:fn="custom_function_ns"
     version="2.0">
 
+    <xsl:param name="version"/>
+    
     <xsl:template match="/">
         <html>
             <head>
                 <meta name="title" content="Clojure from the ground up"/>
                 <meta name="author" content="Kyle Kingsbury"/>
+                <meta name="version" content="{$version}"/>
             </head>
             <body>
                 <xsl:apply-templates select="reverse(.//article[.//h1/a/@href != '/posts/318-clojure-from-the-ground-up-roadmap'])"/>

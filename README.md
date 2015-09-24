@@ -6,7 +6,7 @@ This is a pdf-book by Kyle Kingsbury (aka aphyr) called "Clojure from the ground
 
 For build:
 
-    $ lein
+    $ lein run
 
 For only update downloaded content:
 
