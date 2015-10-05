@@ -7,19 +7,7 @@
                             SimpleXmlSerializer]))
 
 
-                            
-                            
-; Helpers
-(defn log 
-  "Retreive sequence of commits for specified path. If path is not specified, returns full log"
-  [& args]
-  (let [lg (-> (org.eclipse.jgit.api.Git/open (new java.io.File "."))
-               (.log))]
-    (when args
-      (.addPath lg (first args)))
-    (seq (.call lg))))
-                            
-                            
+
 ; Steps functions
 (defn download
   [uri to-file]
@@ -75,9 +63,7 @@
 (defn -convert
   "Make pdf"
   [& args]
-  (let [xsl-context {:version (clojure.string/join "." [(count (log "resources/input.html"))
-                                                             (count (log "resources"))
-                                                             (count (log "src"))])} ]
+  (let [xsl-context {:version (-> "project.clj" slurp read-string (nth 2))} ]
     (do
       (clean (java.io.File. "resources/input.html") (java.io.File. "target/cleaned.xml"))
       (transform (new java.io.File "target/cleaned.xml")
